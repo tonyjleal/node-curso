@@ -1,2 +1,2 @@
-
-console.log('hola mundo')
+// terminal $> node app
+console.log('Hola mundo');
