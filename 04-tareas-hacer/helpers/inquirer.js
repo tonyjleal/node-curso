@@ -94,6 +94,11 @@ const listDelete = async( tareas = []) => {
         }
     });
 
+    choices.unshift({
+        value: '0',
+        name: `0. `.green + 'Cancelar'
+    });
+
     const questions = [
         {
             type: 'list',

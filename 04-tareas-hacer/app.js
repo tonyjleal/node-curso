@@ -37,10 +37,12 @@ const main = async() => {
             break;
             case '6':
                 const id = await listDelete(tareas.listadoArray);
-                const isOk = await confirmar('¿Está seguro?')
-                if(isOk) {
-                    tareas.borrarTarea(id);
-                    console.log('Tarea borrada');
+                if(id !== 0) {
+                    const isOk = await confirmar('¿Está seguro?')
+                    if(isOk) {
+                        tareas.borrarTarea(id);
+                        console.log('Tarea borrada');
+                    }
                 }
             break;
         }
