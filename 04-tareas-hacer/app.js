@@ -1,4 +1,4 @@
-const { inquireMenu, pause, readInput, listDelete, confirmar } = require('./helpers/inquirer');
+const { inquireMenu, pause, readInput, listDelete, confirmar, showCheckList } = require('./helpers/inquirer');
 const { saveDB, readDB } = require('./helpers/saveFile');
 const Tareas = require('./models/tareas');
 
@@ -34,6 +34,10 @@ const main = async() => {
             break;
             case '4':
                 tareas.listarPendientesCompletadas(false);
+            break;
+            case '5':
+                const ids = await showCheckList(tareas.listadoArray);
+                tareas.marcarTareasCompletadas(ids);
             break;
             case '6':
                 const id = await listDelete(tareas.listadoArray);

@@ -17,7 +17,7 @@ const questions = [
             },
             {
                 value: '3',
-                name: `${ '3.'.green } Listar tareas compleatadas`
+                name: `${ '3.'.green } Listar tareas completadas`
             },
             {
                 value: '4',
@@ -86,8 +86,8 @@ const readInput = async( message ) => {
 const listDelete = async( tareas = []) => {
     
     const choices = tareas.map( (tarea, i) => {
-        ;
-        const idx = `${ i+1 }.`.green
+        
+        const idx = `${ i+1 }.`.green;
         return {
             value: tarea.id,
             name: `${idx} ${tarea.descripcion}`,
@@ -126,10 +126,38 @@ const confirmar = async( message ) => {
     return ok;
 }
 
+const showCheckList = async( tareas = []) => {
+    
+    const choices = tareas.map( (tarea, i) => {
+        
+        const idx = `${ i+1 }.`.green;
+        return {
+            value: tarea.id,
+            name: `${idx} ${tarea.descripcion}`,
+            checked: tarea.completadoEn,
+        }
+    });
+
+    const questions = [
+        {
+            type: 'checkbox',
+            name: 'ids',
+            message: 'Selecciones',
+            choices
+        }
+    ]
+    
+    const {ids} = await inquirer.prompt(questions);
+    
+    return ids;
+}
+
+
 module.exports = {
     inquireMenu,
     pause,
     readInput,
     listDelete,
-    confirmar
+    confirmar, 
+    showCheckList,
 }
