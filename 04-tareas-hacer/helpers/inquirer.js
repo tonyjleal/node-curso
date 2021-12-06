@@ -94,7 +94,7 @@ const listDelete = async( tareas = []) => {
         }
     });
 
-    const preguntas = [
+    const questions = [
         {
             type: 'list',
             name: 'id',
@@ -103,14 +103,28 @@ const listDelete = async( tareas = []) => {
         }
     ]
     
-    const {id} = await inquirer.prompt(preguntas);
+    const {id} = await inquirer.prompt(questions);
     
     return id;
+}
+
+const confirmar = async( message ) => {
+    const question = [
+        {
+            type: 'confirm',
+            name: 'ok',
+            message
+        }
+    ]
+
+    const {ok} = await inquirer.prompt(question);
+    return ok;
 }
 
 module.exports = {
     inquireMenu,
     pause,
     readInput,
-    listDelete
+    listDelete,
+    confirmar
 }
