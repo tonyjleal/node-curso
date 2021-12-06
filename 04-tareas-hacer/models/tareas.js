@@ -25,7 +25,7 @@ class Tareas {
         return listado;
     }
 
-    loadTareasFromArray(tareas = []) {
+    loadTareasFromArray( tareas = [] ) {
        tareas.forEach( (tarea) => {
            this._listado[tarea.id] = tarea;
        })
@@ -36,6 +36,18 @@ class Tareas {
         const tarea = new Tarea(descripcion);
         this._listado[tarea.id] = tarea;
     
+    }
+
+    listadoCompleto() {
+
+        console.log();
+        this.listadoArray.forEach((tarea, i) => {
+            let idx = `${i+1}.`.green;
+            const {descripcion, completadoEn} = tarea; 
+            const estado = (completadoEn) ? 'Completada'.green : 'Pendiente'.red; 
+
+            console.log(`\t${idx}  ${descripcion} :: ${estado}`);
+        });
     }
 }
 
