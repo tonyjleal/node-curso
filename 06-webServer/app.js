@@ -1,10 +1,11 @@
 const express = require('express');
+const hbs = require('hbs');
 const app = express();
 const port = 8081; 
 
-// Renderizar vistas sencillas
+// Handlebars
 app.set('view engine', 'hbs');
-
+hbs.registerPartials(__dirname.concat('/views/partials'));
 app.use(express.static('public'));
 
 app.get('/', (req, res) => {
@@ -15,11 +16,17 @@ app.get('/', (req, res) => {
 });
 
 app.get('/generic', (req, res) => {
-  res.sendFile(__dirname + '/public/generic.html' );
+  res.render('generic', {
+    nombre: 'Antonio Leal',
+    titulo: 'Curso de Node'
+  });
 });
 
 app.get('/elements', (req, res) => {
-  res.sendFile(__dirname + '/public/generic.html' );
+  res.render('elements', {
+    nombre: 'Antonio Leal',
+    titulo: 'Curso de Node'
+  });
 });
 
 app.get('*', (req, res) => {
