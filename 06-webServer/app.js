@@ -1,12 +1,15 @@
-const express = require('express')
+const express = require('express');
 const app = express();
 const port = 8081; 
 
-// Servir contenido estático
-app.use( express.static('public') );
+app.use(express.static('public'));
 
-app.get('/hola-mundo', (req, res) => {
-  res.send('Hello World');
+app.get('/generic', (req, res) => {
+  res.sendFile(__dirname + '/public/generic.html' );
+});
+
+app.get('/elements', (req, res) => {
+  res.sendFile(__dirname + '/public/generic.html' );
 });
 
 app.get('*', (req, res) => {
