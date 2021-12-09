@@ -1,18 +1,16 @@
 const express = require('express')
-const app = express()
+const app = express();
 const port = 8081; 
 
-
-app.get('/', (req, res) => {
-  res.send('Home');
-});
+// Servir contenido estático
+app.use( express.static('public') );
 
 app.get('/hola-mundo', (req, res) => {
   res.send('Hello World');
 });
 
 app.get('*', (req, res) => {
-  res.send('404 | Page not found');
+  res.sendFile(__dirname + '/public/404.html' );
 });
 
 app.listen(port, () => {
