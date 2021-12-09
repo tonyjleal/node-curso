@@ -16,6 +16,10 @@ const questions = [
                 name: `${ '2.'.green } Historial`
             },
             {
+                value: 3,
+                name: `${ '3.'.green } Borrar Historial`
+            },
+            {
                 value: 0,
                 name: `${ '0.'.green } Salir`
             }
@@ -110,38 +114,10 @@ const confirmar = async( message ) => {
     return ok;
 }
 
-const showCheckList = async( tareas = []) => {
-    
-    const choices = tareas.map( (tarea, i) => {
-        
-        const idx = `${ i+1 }.`.green;
-        return {
-            value: tarea.id,
-            name: `${idx} ${tarea.descripcion}`,
-            checked: tarea.completadoEn,
-        }
-    });
-
-    const questions = [
-        {
-            type: 'checkbox',
-            name: 'ids',
-            message: 'Selecciones',
-            choices
-        }
-    ]
-    
-    const {ids} = await inquirer.prompt(questions);
-    
-    return ids;
-}
-
-
 module.exports = {
     inquireMenu,
     pause,
     readInput,
     listarLugares,
     confirmar, 
-    showCheckList,
 }
