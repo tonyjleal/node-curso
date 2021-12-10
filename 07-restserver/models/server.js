@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 
 class Server {
 
@@ -14,8 +15,13 @@ class Server {
     }
 
     middlewares() {
+
+        // CORS
+        this.app.use(cors());
+
         // Directorio público
         this.app.use(express.static('public'));
+        
     }
 
     routes() {
@@ -27,7 +33,7 @@ class Server {
         });
 
         this.app.put('/api', (req, res) => {
-            res.json({
+            res.status(500).json({
                 message: 'put API'
             });
         });
