@@ -13,7 +13,7 @@ router.post('/', userPOST);
 
 router.patch('/', userPATCH);
 
-router.put('/', userPUT);
+router.put('/:id', userPUT);
 
 router.delete('/', userDELETE);
 
