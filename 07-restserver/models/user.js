@@ -1,7 +1,7 @@
-const { SchemaType, model } = require('mongoose');
+const { Schema, model } = require('mongoose');
 
 const UserSchema = Schema({
-    nombre:  {
+    name:  {
         type: String,
         required: [true, 'El nombre es obligatorio'],
     },
