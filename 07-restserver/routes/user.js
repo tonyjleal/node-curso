@@ -3,7 +3,7 @@ const { check } = require('express-validator');
 
 
 const { validateFields } = require('../middlewares/validate-fields');
-const { isRoleValid } = require('../helpers/db-validators');
+const { isRoleValid, existEmail } = require('../helpers/db-validators');
 const { userGET, 
         userPUT, 
         userPATCH, 
@@ -17,6 +17,7 @@ router.get('/', userGET);
 router.post('/', [
         check('name', 'El nombre es obligatorio').not().isEmpty(),
         check('email', 'El correo no es válido').isEmail(),
+        check('email').custom( existEmail ),
         check('password', 'El password es obligatorio y debe tener más de 6 letras').isLength({ min: 6}),
         // check('rol', 'Nop es un rol válido').isIn(['ADMIN_ROLE', 'USER_ROLE']),
         check('rol').custom( isRoleValid ),
