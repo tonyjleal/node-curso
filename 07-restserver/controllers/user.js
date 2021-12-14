@@ -9,11 +9,31 @@ const userGET = async (req = request, res = response) => {
 
     // const {q, name = 'No name', apikey, page = 1, limit = 5} = req.query;
     const { limit = 5, skip = 0 } = req.query;
-    const users = await User.find()
-                            .skip( Number( skip ) )
-                            .limit( Number( limit ));
+    const query = { state: true };
 
-    res.json(users);
+    // Ejecuta ambas pero hasta que no termina
+    // la primera promesa, no pasa a lanzar la
+    // siguiente.
+    // const users = await User.find( query )
+    //                         .skip( Number( skip ) )
+    //                         .limit( Number( limit ));
+    // const total = await User.countDocuments( query );
+
+    // Ejecuta ambas promesas de manera simultanea
+    // no devolverá la respuesta hasta que ambas
+    // hayan devuelto su valor.
+    // NOTA: Si una da error, todas van a dar error.
+    const [total, users] = await Promise.all([
+        User.countDocuments( query ),
+        User.find( query )
+            .skip( Number( skip ) )
+            .limit( Number( limit )),
+    ]);
+
+    res.json({
+        total,
+        users,
+    });
 }
 
 const userPOST = async (req, res = response) => {
