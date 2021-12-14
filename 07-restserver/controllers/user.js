@@ -70,9 +70,16 @@ const userPATCH = (req, res = response) => {
     });
 }
 
-const userDELETE = (req, res = response) => {
+const userDELETE = async (req, res = response) => {
+
+    const { id } = req.params;
+    // Eliminar físicamente
+    // const user = await User.findByIdAndDelete( id );
+
+    const user = await User.findByIdAndUpdate( id, { state: false });
+
     res.json({
-        message: 'delete API - controller'
+        user,
     });
 }
 
