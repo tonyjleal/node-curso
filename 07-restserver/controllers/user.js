@@ -1,5 +1,6 @@
 const { response, request } = require('express');
-const bcryptjs = require('bcryptjs');
+const { encryptPassword } = require('../helpers/encrypt-password');
+
 
 const User = require('../models/user');
 
@@ -23,11 +24,8 @@ const userPOST = async (req, res = response) => {
     const { name, email, password, rol} = req.body;
     const user = new User( { name, email, password, rol } );
 
-    //Encriptar contraseña
-    const salt = bcryptjs.genSaltSync();
-    user.password = bcryptjs.hashSync(password, salt);
+    encryptPassword( password );
 
-    // Guardar db
     await user.save();
     
     res.json({
@@ -35,13 +33,20 @@ const userPOST = async (req, res = response) => {
     });
 }
 
-const userPUT = (req, res = response) => {
+const userPUT = async (req, res = response) => {
 
     const { id } = req.params;
+    const { _id, password, google, email, ...rest } = req.body;
+
+    if ( password ) {
+        encryptPassword( password, rest );
+    }
+
+    const user = await User.findByIdAndUpdate( id, rest );
 
     res.json({
         message: 'put API - controller',
-        id,
+        user,
     });
 }
 
