@@ -5,18 +5,15 @@ const { encryptPassword } = require('../helpers/encrypt-password');
 const User = require('../models/user');
 
 
-const userGET = (req = request, res = response) => {
+const userGET = async (req = request, res = response) => {
 
-    const {q, name = 'No name', apikey, page = 1, limit = 5} = req.query;
+    // const {q, name = 'No name', apikey, page = 1, limit = 5} = req.query;
+    const { limit = 5, skip = 0 } = req.query;
+    const users = await User.find()
+                            .skip( Number( skip ) )
+                            .limit( Number( limit ));
 
-    res.json({
-        message: 'get API - controller',
-        q,
-        name,
-        apikey,
-        page,
-        limit
-    });
+    res.json(users);
 }
 
 const userPOST = async (req, res = response) => {
@@ -24,7 +21,7 @@ const userPOST = async (req, res = response) => {
     const { name, email, password, rol} = req.body;
     const user = new User( { name, email, password, rol } );
 
-    encryptPassword( password );
+    encryptPassword( password, user );
 
     await user.save();
     
@@ -44,10 +41,7 @@ const userPUT = async (req, res = response) => {
 
     const user = await User.findByIdAndUpdate( id, rest );
 
-    res.json({
-        message: 'put API - controller',
-        user,
-    });
+    res.json(user);
 }
 
 const userPATCH = (req, res = response) => {
