@@ -6,7 +6,12 @@ const encryptPassword = ( password, user ) => {
     user.password = bcryptjs.hashSync(password, salt);
 }
 
+const comparePassword = ( password, passwordCompare ) => {
+   return bcryptjs.compareSync(password, passwordCompare);
+}
+
 
 module.exports = {
-    encryptPassword
+    encryptPassword,
+    comparePassword
 }
