@@ -9,6 +9,7 @@ const { userGET,
         userPATCH, 
         userDELETE, 
         userPOST } = require('../controllers/user');
+const { validateJWT } = require('../middlewares/validar-jwt');
 
 const router = Router();
 
@@ -34,6 +35,7 @@ router.put('/:id', [
 ], userPUT);
 
 router.delete('/:id', [
+        validateJWT,
         check('id','No es un ID válido').isMongoId(),
         check('id').custom( existUserById ),
         validateFields,
