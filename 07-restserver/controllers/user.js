@@ -38,8 +38,8 @@ const userGET = async (req = request, res = response) => {
 
 const userPOST = async (req, res = response) => {
 
-    const { name, email, password, rol} = req.body;
-    const user = new User( { name, email, password, rol } );
+    const { name, email, password, role} = req.body;
+    const user = new User( { name, email, password, role } );
 
     encryptPassword( password, user );
 

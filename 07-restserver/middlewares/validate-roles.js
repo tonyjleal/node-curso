@@ -18,7 +18,28 @@ const isAdminRole = (req, res, next) => {
     next();
 }
 
+const hasRole = ( ...roles ) => {
+    return (req, res, next) => {
+        
+        if( !req.user) {
+            return res.status(500).json({
+                msg: 'Se requiere verificar el rol'
+            });
+        }
+        
+        const { role } = req.user;
+        if( !roles.includes(role) ) {
+            return res.status(401).json({
+                msg: `El servicio requiere uno de estos roles ${ roles }`
+            });
+        }
+
+        next();
+    }
+}
+
 module.exports = {
     isAdminRole,
+    hasRole,
 }
 

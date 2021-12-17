@@ -10,7 +10,7 @@ const { userGET,
         userDELETE, 
         userPOST } = require('../controllers/user');
 const { validateJWT } = require('../middlewares/validate-jwt');
-const { isAdminRole } = require('../middlewares/validate-roles');
+const { isAdminRole, hasRole } = require('../middlewares/validate-roles');
 
 const router = Router();
 
@@ -21,8 +21,8 @@ router.post('/', [
         check('email', 'El correo no es válido').isEmail(),
         check('email').custom( existEmail ),
         check('password', 'El password es obligatorio y debe tener más de 6 letras').isLength({ min: 6}),
-        // check('rol', 'Nop es un rol válido').isIn(['ADMIN_ROLE', 'USER_ROLE']),
-        check('rol').custom( isRoleValid ),
+        // check('role', 'Nop es un rol válido').isIn(['ADMIN_ROLE', 'USER_ROLE']),
+        check('role').custom( isRoleValid ),
         validateFields,
 ], userPOST);
 
@@ -31,13 +31,14 @@ router.patch('/', userPATCH);
 router.put('/:id', [
         check('id','No es un ID válido').isMongoId(),
         check('id').custom( existUserById ),
-        check('rol').custom( isRoleValid ),
+        check('role').custom( isRoleValid ),
         validateFields,
 ], userPUT);
 
 router.delete('/:id', [
         validateJWT,
-        isAdminRole,
+        // isAdminRole,        
+        hasRole('ADMIN_ROLE', 'USER_ROLE', 'OTRO_ROLE'),
         check('id','No es un ID válido').isMongoId(),
         check('id').custom( existUserById ),
         validateFields,
