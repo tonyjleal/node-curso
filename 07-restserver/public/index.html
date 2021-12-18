@@ -28,18 +28,17 @@
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script>
         function handleCredentialResponse(response) {
-
+            
             //Google Token : ID_TOKEN
             // console.log('id_token', response.credential);
             const body = { id_token: response.credential };
             fetch('http://localhost:8081/api/auth/google',  {
                 method: 'POST',
                 headers: {
-                    'Content-Type':'application/json'
+                    'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(body)
-            })
-                .then( resp => resp.json())
+            }).then( resp => resp.json())
                 .then( resp => {
                     console.log(resp);
                 })
