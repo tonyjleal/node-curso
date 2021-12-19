@@ -9,7 +9,7 @@ const isAdminRole = (req, res, next) => {
     }
     
     const { role, name } = req.user;
-    if( role !== '[ADMIN_ROLE]') {
+    if( role !== 'ADMIN_ROLE') {
         return res.status(401).json({
             msg: `${name} no tiene permisos para realizar esta acción`
         })
