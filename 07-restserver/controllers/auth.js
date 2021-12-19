@@ -14,7 +14,7 @@ const login = async ( req, res = response) => {
         
         const user = await User.findOne({ email }) ;
   
-        if( !user || !user.state){
+        if( !user || !user.status){
             return res.status(400).json({
                 msg: 'Usuario/Password invalidos'
             });
