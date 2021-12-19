@@ -36,7 +36,10 @@
             //Google Token : ID_TOKEN
             // console.log('id_token', response.credential);
             const body = { id_token: response.credential };
-            fetch('http://localhost:8081/api/auth/google',  {
+            const url = (window.location.hostname.includes('localhost')) 
+                        ? 'http://localhost:8081/'
+                        : 'https://curso-node-restserver-tj.herokuapp.com';
+            fetch(`${ url }/api/auth/google`,  {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
