@@ -8,8 +8,12 @@ class Server {
     constructor() {
         this.app = express();
         this.port = process.env.PORT;
-        this.userPath = '/api/users';
-        this.authPath = '/api/auth';
+
+        this.paths = {
+            auth:       '/api/auth',
+            category:   '/api/categories',
+            user:       '/api/users',
+        }
 
         // Conectar BBDD
         this.connectDB();
@@ -39,8 +43,9 @@ class Server {
     }
 
     routes() {
-        this.app.use(this.authPath, require('../routes/auth'));
-        this.app.use(this.userPath, require('../routes/user'));
+        this.app.use( this.paths.auth, require('../routes/auth') );
+        this.app.use( this.paths.category, require('../routes/category') );
+        this.app.use( this.paths.user, require('../routes/user') );
     }
 
     listen() {

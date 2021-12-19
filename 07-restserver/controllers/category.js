@@ -1,56 +1,55 @@
 const { response, request } = require('express');
-const { encryptPassword } = require('../helpers/encrypt-password');
 
 
-const User = require('../models/user');
+const Category = require('../models/category');
 
 
-const userGET = async (req = request, res = response) => {
+const categoryGET = async (req = request, res = response) => {
 
     // const {q, name = 'No name', apikey, page = 1, limit = 5} = req.query;
     const { limit = 5, skip = 0 } = req.query;
-    const query = { status: true };
+    const query = { state: true };
 
     // Ejecuta ambas pero hasta que no termina
     // la primera promesa, no pasa a lanzar la
     // siguiente.
-    // const users = await User.find( query )
+    // const categorys = await Category.find( query )
     //                         .skip( Number( skip ) )
     //                         .limit( Number( limit ));
-    // const total = await User.countDocuments( query );
+    // const total = await Category.countDocuments( query );
 
     // Ejecuta ambas promesas de manera simultanea
     // no devolverá la respuesta hasta que ambas
     // hayan devuelto su valor.
     // NOTA: Si una da error, todas van a dar error.
-    const [total, users] = await Promise.all([
-        User.countDocuments( query ),
-        User.find( query )
+    const [total, categorys] = await Promise.all([
+        Category.countDocuments( query ),
+        Category.find( query )
             .skip( Number( skip ) )
             .limit( Number( limit )),
     ]);
 
     res.json({
         total,
-        users,
+        categorys,
     });
 }
 
-const userPOST = async (req, res = response) => {
+const categoryPOST = async (req, res = response) => {
 
     const { name, email, password, role} = req.body;
-    const user = new User( { name, email, password, role } );
+    const category = new Category( { name, email, password, role } );
 
-    encryptPassword( password, user );
+    encryptPassword( password, category );
 
-    await user.save();
+    await category.save();
     
     res.json({
-        user,
+        category,
     });
 }
 
-const userPUT = async (req, res = response) => {
+const categoryPUT = async (req, res = response) => {
 
     const { id } = req.params;
     const { _id, password, google, email, ...rest } = req.body;
@@ -59,35 +58,35 @@ const userPUT = async (req, res = response) => {
         encryptPassword( password, rest );
     }
 
-    const user = await User.findByIdAndUpdate( id, rest );
+    const category = await Category.findByIdAndUpdate( id, rest );
 
-    res.json(user);
+    res.json(category);
 }
 
-const userPATCH = (req, res = response) => {
+const categoryPATCH = (req, res = response) => {
     res.json({
         message: 'patch API - controller'
     });
 }
 
-const userDELETE = async (req, res = response) => {
+const categoryDELETE = async (req, res = response) => {
 
     const { id } = req.params;
     // Eliminar físicamente
-    // const user = await User.findByIdAndDelete( id );
+    // const category = await Category.findByIdAndDelete( id );
 
-    const user = await User.findByIdAndUpdate( id, { status: false });
+    const category = await Category.findByIdAndUpdate( id, { state: false });
 
 
     res.json({
-        user,
+        category,
     });
 }
 
 module.exports = {
-    userGET,
-    userPOST,
-    userPUT,
-    userPATCH,
-    userDELETE
+    categoryGET,
+    categoryPOST,
+    categoryPUT,
+    categoryPATCH,
+    categoryDELETE
 }
