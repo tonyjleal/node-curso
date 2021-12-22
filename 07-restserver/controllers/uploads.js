@@ -1,4 +1,5 @@
 const path = require('path');
+const { v4: uuidv4 } = require('uuid');
 const { response } = require("express");
 
 
@@ -13,8 +14,19 @@ const loadFile = ( req, res = response) => {
   
  
     const { file } = req.files;
-  
-    const uploadPath = path.join(__dirname, '../uploads/', file.name);
+    const shortName = file.name.split('.');
+    const extension = shortName[ shortName.length -1 ];
+    
+    const extensionAllowed = ['png', 'jpg', 'jpeg', 'gif'];
+    
+    if ( !extensionAllowed.includes(extension) ) {
+        return res.status(400).json({
+            msg: `La extensión ${ extension } no es permitida`,
+        });
+    }
+    
+    const temporalName = uuidv4() + '.'+ extension;
+    const uploadPath = path.join(__dirname, '../uploads/', temporalName);
   
     file.mv(uploadPath, (err) => {
       if (err) {
