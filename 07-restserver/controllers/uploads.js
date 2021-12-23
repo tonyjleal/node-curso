@@ -11,11 +11,14 @@ const loadFile = async( req, res = response) => {
       return;
     }
   
-    const fileName = await uploadFile(req.files);
-
-    res.json({
-        fileName,
-    })
+    try {
+        const fileName = await uploadFile(req.files, undefined, 'imgs');
+        res.json({
+            fileName,
+        })
+    } catch (msg) {
+        res.status(400).json({ msg });
+    }
 
 }
 
