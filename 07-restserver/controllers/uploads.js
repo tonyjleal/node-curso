@@ -1,3 +1,6 @@
+const path = require('path');
+const fs = require('fs');
+
 const { response } = require("express");
 const { uploadFile } = require("../helpers");
 const { User, Product } = require("../models");
@@ -42,6 +45,19 @@ const updateImage = async(req, res = response) => {
             return res.status(500).json({
                 msg: 'No está realizada esta validación'
             });
+    }
+
+    // Limpiar imagenes previas
+    try {
+        if( model.image ) {
+            // Borrar imagen del servidor
+            const pathImage = path.join(__dirname, '../uploads', collection, model.image)
+            if ( fs.existsSync(pathImage) ) {
+                fs.unlinkSync(pathImage);
+            } 
+        }
+    } catch( error ) {
+
     }
 
     const name = await uploadFile(req.files, undefined, collection);
