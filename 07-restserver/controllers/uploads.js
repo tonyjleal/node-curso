@@ -1,6 +1,9 @@
 const path = require('path');
 const fs = require('fs');
 
+const cloudinary = require('cloudinary').v2
+cloudinary.config(process.env.CLOUDINARY_URL);
+
 const { response } = require("express");
 const { uploadFile } = require("../helpers");
 const { User, Product } = require("../models");
@@ -70,6 +73,51 @@ const updateImage = async(req, res = response) => {
     });
 }
 
+const updateImageCloudinary = async(req, res = response) => {
+
+    const { id, collection } = req.params;
+
+    let model;
+
+    switch ( collection ) {
+        case 'users':
+            model = await User.findById(id);
+            if( !model ) {
+                return res.status(400).json({
+                    msg: `No existe usuario con el id ${ id }`
+                }); 
+            }
+        break;
+        case 'products':
+            model = await Product.findById(id);
+            if( !model ) {
+                return res.status(400).json({
+                    msg: `No existe el producto con el id ${ id }`
+                })
+            }
+        break;
+        default:
+            return res.status(500).json({
+                msg: 'No está realizada esta validación'
+            });
+    }
+
+    // Limpiar imagenes previas
+
+    if( model.image ) {
+        
+    }
+    const { tempFilePath } = req.files.file;
+    const { secure_url } = await cloudinary.uploader.upload( tempFilePath );
+    
+    model.image = secure_url;
+    
+    await model.save();
+
+    res.json({
+        model,
+    });
+}
 
 const showImage = async( req, res= response ) => {
 
@@ -117,5 +165,6 @@ const showImage = async( req, res= response ) => {
 module.exports = {
     loadFile,
     updateImage,
+    updateImageCloudinary,
     showImage
 }
