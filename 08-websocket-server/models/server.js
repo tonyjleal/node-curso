@@ -44,6 +44,11 @@ class Server {
             socket.on('disconnect', () => {
                 console.log('Client disconnected', socket.id);
             });
+
+            socket.on('send-message', (payload) => {
+                console.log(payload);
+            });
+
         });
     }
 

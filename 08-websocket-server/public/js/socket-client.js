@@ -3,6 +3,9 @@
 // Referencias HTML
 const lblOnline  = document.querySelector('#lblOnline'); 
 const lblOffline = document.querySelector('#lblOffline');
+const txtMessage = document.querySelector('#txtMessage');
+const btnSend    = document.querySelector('#btnSend');
+
 
 const socket = io();
 
@@ -24,3 +27,14 @@ socket.on('disconnect', () => {
 
 });
 
+
+btnSend.addEventListener('click', () => {
+    const message = txtMessage.value;
+    const payload = {
+        message,
+        id: '00sdf9as9fadfs-adsfasdfa0',
+        date: new Date().getTime(),
+    }
+    socket.emit('send-message', payload);
+
+});
