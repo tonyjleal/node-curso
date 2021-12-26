@@ -46,7 +46,7 @@ class Server {
             });
 
             socket.on('send-message', (payload) => {
-                console.log(payload);
+                this.io.emit('send-message', payload);
             });
 
         });
