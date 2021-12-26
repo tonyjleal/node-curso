@@ -5,10 +5,10 @@ const cors = require('cors');
 class Server {
 
     constructor() {
-        this.app = express();
-        this.port = process.env.PORT;
+        this.app    = express();
+        this.port   = process.env.PORT;
         this.server = require('http').createServer(this.app);
-        this.io = require('socket.io')(this.server);
+        this.io     = require('socket.io')(this.server);
 
         this.paths = {
         }
@@ -18,6 +18,9 @@ class Server {
 
         // Rutas de mi aplicación
         this.routes();
+
+        //Sockets
+        this.sockets();
     }
 
 
@@ -32,7 +35,17 @@ class Server {
     }
 
     routes() {
-     }
+    }
+
+    sockets() {
+        this.io.on('connection', socket => {
+            console.log('Client connected', socket.id);
+
+            socket.on('disconnect', () => {
+                console.log('Client disconnected', socket.id);
+            });
+        });
+    }
 
     listen() {
         this.server.listen(this.port, () => {
