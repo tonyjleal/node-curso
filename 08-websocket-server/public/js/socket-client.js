@@ -38,6 +38,8 @@ btnSend.addEventListener('click', () => {
         id: '00sdf9as9fadfs-adsfasdfa0',
         date: new Date().getTime(),
     }
-    socket.emit('send-message', payload);
+    socket.emit('send-message', payload, ( id ) => {
+        console.log('From server', id);
+    });
 
 });
