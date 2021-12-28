@@ -7,13 +7,14 @@ const socketController = ( socket ) => {
 
         socket.on('disconnect', () => {});
 
-        socket.on('send-message', ( payload, callback ) => {
+        socket.emit('last-ticket', 'Ticket ' + ticketControl.last );
+
+        socket.on('next-ticket', ( payload, callback ) => {
             
-            const id = 123456;
-            callback({ id, date: new Date().getTime() });
-            
-            socket.broadcast.emit('send-message', payload);
-            
+            const next = ticketControl.next();
+            callback( next );
+        
+            // TODO notificar que hay un nuevo ticket pendiente
         });
 
 }
