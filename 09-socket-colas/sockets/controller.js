@@ -8,6 +8,7 @@ const socketController = ( socket ) => {
         socket.on('disconnect', () => {});
 
         socket.emit('last-ticket', 'Ticket ' + ticketControl.last );
+        socket.emit('actual-state', ticketControl.lastFour );
 
         socket.on('next-ticket', ( payload, callback ) => {
             
@@ -28,7 +29,7 @@ const socketController = ( socket ) => {
 
             const ticket = ticketControl.serveTicket( desktop );
             
-            // TODO Notificar cambio en los últimos 4
+            socket.broadcast.emit('actual-state', ticketControl.lastFour);
             
             if( !ticket ) {
                 callback({
