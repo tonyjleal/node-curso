@@ -1,6 +1,8 @@
 // Referencias HTML
 const lblDesktop = document.querySelector('h1');
 const btnAttend = document.querySelector('button');
+const lblTicket = document.querySelector('small');
+const divAlert = document.querySelector('.alert');
 
 
 
@@ -14,9 +16,7 @@ if( !searchParams.has('desktop') ) {
 const desktop = searchParams.get('desktop');
 lblDesktop.innerText = desktop;
 
-// Referencias del HTML
-const lblNewTicket  = document.querySelector('#lblNewTicket');
-const btnCreate = document.querySelector('button');
+divAlert.style.display = 'none';
 
 const socket = io();
 
@@ -41,9 +41,16 @@ socket.on( 'last-ticket',  ( last ) => {
 
 btnAttend.addEventListener( 'click', () => {
     
-    // socket.emit( 'next-ticket', null, ( ticket ) => {
-    //     lblNewTicket.innerText = ticket;
-    // });
+    socket.emit( 'attend-ticket', { desktop }, ( { ok, ticket } ) => {
+        
+        if( !ok ) {
+            lblTicket.innerText = 'Nadie'
+            return divAlert.style.display = '';
+        }
+        
+        lblTicket.innerText = 'Ticket '+ ticket.number;
+
+    });
 
 });
 
