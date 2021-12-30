@@ -16,8 +16,10 @@ const socket = io();
 
 socket.on('actual-state', ( payload ) => {
 
+    const audio = new Audio('./audio/new-ticket.mp3');
+    audio.play();
+    console.log('audio');
     const [ ticket1, ticket2, ticket3, ticket4 ] = payload;
-
 
     
     if( ticket1 ){
