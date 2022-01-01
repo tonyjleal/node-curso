@@ -25,10 +25,11 @@ myForm.addEventListener('submit', ev => {
     .then( resp => resp.json() )
     .then( ({ msg, token }) => {
         if( msg ) {
-           return console.error(msg);
+            return console.error(msg);
         }
         
         localStorage.setItem('token', token);
+        window.location = 'chat.html';
 
     })
     .catch( err => {
@@ -53,6 +54,8 @@ function handleCredentialResponse(response) {
     .then(  ({user, token})  => {
         localStorage.setItem('email', user.email);
         localStorage.setItem('token', token);
+        
+        window.location = 'chat.html';
     })
     .catch( console.warn );
 }

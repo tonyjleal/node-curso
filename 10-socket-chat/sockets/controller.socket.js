@@ -1,10 +1,16 @@
+const { validateJWT } = require("../helpers");
 
 
-const socketController = ( socket ) => {
+const socketController = async ( socket ) => {
 
 
-    
-    console.log('cliente conectado', socket.id);
+    const user = await validateJWT(socket.handshake.headers['x-token']);
+
+    if( !user ) {
+        socket.disconnect();
+    }
+
+    console.log('Conectado ', user.name);
 
 }
 
