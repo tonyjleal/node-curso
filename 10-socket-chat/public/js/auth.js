@@ -41,23 +41,26 @@ function handleCredentialResponse(response) {
     //Google Token : ID_TOKEN
     // console.log('id_token', response.credential);
     const body = { id_token: response.credential };
-    
+
     fetch(`${ url }/google`,  {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(body)
-    }).then( resp => resp.json())
-        .then( ({ token }) => {
-            localStorage.setItem( 'token', token );
-        })
-        .catch( console.warn );
+    }).
+    then( resp => resp.json())
+    .then(  ({user, token})  => {
+        localStorage.setItem('email', user.email);
+        localStorage.setItem('token', token);
+    })
+    .catch( console.warn );
 }
 
 const button = document.getElementById('google_signout');
+
 button.onclick = () => {
-    google.accounts.id.disableAutoSelect()
+    google.accounts.id.disableAutoSelect();
     google.accounts.id.revoke(localStorage.getItem('email'), done => {
         localStorage.clear();
         location.reload();
