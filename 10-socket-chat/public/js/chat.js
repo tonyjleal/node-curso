@@ -7,6 +7,13 @@ let user = null;
 let socket = null;
 
 
+// Referencias HTML
+const txtUid        = document.querySelector('#txtUid'); 
+const txtMessage    = document.querySelector('#txtMessage');
+const ulUsers       = document.querySelector('#ulUsers');
+const ulMessages    = document.querySelector('#ulMessages');
+const btnSignOut    = document.querySelector('#btnSignOut'); 
+
 // Validar el token del localStorage;
 const validarJWT = async() => {
 
@@ -32,11 +39,32 @@ const validarJWT = async() => {
 }
 
 const connectSocket = async() => {
-    const socket = io({
+    socket = io({
         'extraHeaders' : {
             'x-token' : localStorage.getItem('token'),
         }
     });
+
+    socket.on('connect', () => {
+        console.log('Socket online');
+    });
+
+    socket.on('disconnect', () => {
+        console.log('Socket offline');
+    });
+
+    socket.on('public-messages', () => {
+
+    });
+
+    socket.on('active-users', () => {
+
+    });
+
+    socket.on('private-messages', () => {
+
+    });
+
 }
 
 
