@@ -57,14 +57,28 @@ const connectSocket = async() => {
 
     });
 
-    socket.on('active-users', ( payload ) => {
-        console.log(payload);
-    });
+    socket.on('active-users', showUsers);
 
     socket.on('private-messages', () => {
 
     });
 
+}
+
+const showUsers = (users = []) => {
+    let liItems = '';
+    users.forEach( ({name, uid}) => {
+        liItems += `
+            <li>
+                <p>
+                    <h5 class="text-success">${ name }</h5>
+                    <span class="fs-6 text-muted">${ uid }</span>
+                    </p>
+            </li>
+        `;
+    });
+
+    ulUsers.innerHTML = liItems;
 }
 
 
