@@ -1,16 +1,24 @@
 const { validateJWT } = require("../helpers");
+const { Chat } = require('../models');
+
+const chat = new Chat();
 
 
-const socketController = async ( socket ) => {
-
+const socketController = async ( socket, io ) => {
 
     const user = await validateJWT(socket.handshake.headers['x-token']);
 
     if( !user ) {
         socket.disconnect();
     }
+
+    chat.connectUser(user);
+    io.emit('active-users', chat.usersArr);
     
-    console.log('Conectado ', user.name);  
+    socket.on('disconnect', () => {
+        chat.disconnectUser(user.id);
+        io.emit('active-users', chat.usersArr);
+    });
 }
 
 
