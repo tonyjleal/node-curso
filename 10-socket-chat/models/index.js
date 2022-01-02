@@ -3,7 +3,7 @@ const Role      = require('./role');
 const Server    = require('./server');
 const Product   = require('./product');
 const User      = require('./user');
-
+const Chat      = require('./chat');
 
 module.exports = {
     Category,
@@ -11,4 +11,5 @@ module.exports = {
     Product,
     Server,
     User,
+    Chat,
 }
