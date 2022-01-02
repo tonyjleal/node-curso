@@ -9,9 +9,8 @@ const socketController = async ( socket ) => {
     if( !user ) {
         socket.disconnect();
     }
-
-    console.log('Conectado ', user.name);
-
+    
+    console.log('Conectado ', user.name);  
 }
 
 

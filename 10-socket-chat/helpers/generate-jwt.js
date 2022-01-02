@@ -29,15 +29,11 @@ const validateJWT = async( token = '' ) => {
         }
 
         const { uid } = jwt.verify( token, process.env.SECRETORPRIVATEKEY );
+        const user = await User.findById( uid );
 
-        const user = User.findById( uid );
-
-        // TODO change validation
-        if( user && user.status ) {
-            return user;
-        }
-
-        return null;
+        return ( user && user.status ) 
+                ? user
+                : null;
 
     } catch (error) {
         return null;
