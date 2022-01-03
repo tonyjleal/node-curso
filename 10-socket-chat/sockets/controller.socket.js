@@ -19,6 +19,11 @@ const socketController = async ( socket, io ) => {
         chat.disconnectUser(user.id);
         io.emit('active-users', chat.usersArr);
     });
+
+    socket.on('send-message', ( { uid, message } ) => {
+        chat.sendMessage(user.uid, user.name, message);
+        io.emit('public-messages', chat.lastTen);
+    });
 }
 
 
