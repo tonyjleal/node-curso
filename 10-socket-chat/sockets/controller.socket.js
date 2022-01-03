@@ -14,7 +14,8 @@ const socketController = async ( socket, io ) => {
 
     chat.connectUser(user);
     io.emit('active-users', chat.usersArr);
-    
+    socket.emit('public-messages', chat.lastTen);
+
     socket.on('disconnect', () => {
         chat.disconnectUser(user.id);
         io.emit('active-users', chat.usersArr);

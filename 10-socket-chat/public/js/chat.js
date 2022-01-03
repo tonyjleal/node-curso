@@ -54,7 +54,7 @@ const connectSocket = async() => {
     });
 
     socket.on('public-messages', ( payload ) => {
-        console.log(payload);
+        showPublicMessages(payload);
     });
 
     socket.on('active-users', showUsers);
@@ -63,6 +63,22 @@ const connectSocket = async() => {
 
     });
 
+}
+
+const showPublicMessages = ( messages = []) => {
+    let liItems = '';
+    messages.forEach( ({name, message}) => {
+        liItems += `
+            <li>
+                <p>
+                    <span class="text-primary">${ name }</span>
+                    <span>${ message }</span>
+                </p>
+            </li>
+        `;
+    });
+
+    ulMessages.innerHTML = liItems;    
 }
 
 const showUsers = (users = []) => {
