@@ -1,5 +1,6 @@
 import express, { Application } from 'express';
 import dotenv from 'dotenv';
+import cors from "cors";
 
 import userRoutes from '../routes/user.routes'
 
@@ -16,13 +17,26 @@ class Server {
     constructor() {
         this.app  = express();
         this.port = process.env.PORT || '8081';
-
+        
+        this.middlewares();
+        
         this.routes();
+
     }
 
     routes(): void {
-        console.log(this.apiPaths.users);
         this.app.use( this.apiPaths.users, userRoutes );
+    }
+
+    middlewares(): void {
+        // CORS
+        this.app.use(cors());
+
+        // Lectura Body 
+        this.app.use( express.json() );
+        
+        // Carpeta pública
+        this.app.use( express.static('public') );
     }
 
     listen(): void {
