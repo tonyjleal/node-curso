@@ -16,14 +16,23 @@ const socketController = async ( socket, io ) => {
     io.emit('active-users', chat.usersArr);
     socket.emit('public-messages', chat.lastTen);
 
+    // Conectarlo a una sala especial
+    socket.join( user.id ); // 3 salas: global, socket.id, user.id
+
     socket.on('disconnect', () => {
         chat.disconnectUser(user.id);
         io.emit('active-users', chat.usersArr);
     });
 
     socket.on('send-message', ( { uid, message } ) => {
-        chat.sendMessage(user.uid, user.name, message);
-        io.emit('public-messages', chat.lastTen);
+        
+        if( uid ) {
+            socket.to( uid ).emit('private-messages', { from: user.name, message })
+        } else {
+            chat.sendMessage(user.uid, user.name, message);
+            io.emit('public-messages', chat.lastTen);
+        }
+
     });
 }
 
