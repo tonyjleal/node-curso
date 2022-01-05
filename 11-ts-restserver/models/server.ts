@@ -2,6 +2,7 @@ import express, { Application } from 'express';
 import dotenv from 'dotenv';
 import cors from "cors";
 
+import db from '../database/connection';
 import userRoutes from '../routes/user.routes'
 
 dotenv.config();
@@ -18,10 +19,22 @@ class Server {
         this.app  = express();
         this.port = process.env.PORT || '8081';
         
+        this.dbConnection();
+
         this.middlewares();
         
         this.routes();
 
+    }
+
+    async dbConnection() {
+        try {
+
+            await db.authenticate();
+            console.log('Connection has been established successfully.');
+        
+        } catch (error) {
+            console.error('Unable to connect to the database:', error);        }
     }
 
     routes(): void {
