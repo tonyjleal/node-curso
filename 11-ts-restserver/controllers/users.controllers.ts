@@ -86,14 +86,40 @@ export const putUser = async( req: Request, res: Response) => {
 
 }
 
-export const deletUser = ( req: Request, res: Response) => {
+export const deletUser = async( req: Request, res: Response) => {
 
     const { id } = req.params;
 
-    res.json({
-        msg: 'deleteUser',
-        id,
-    });
+
+    try {
+        
+        const user = User.findByPk(id);
+        if ( !user ) {
+            return res.status(404).json({
+                msg: 'No existe usuario con id' + id
+            });
+        }
+
+        await User.update({
+            status: 0
+        },{
+            where: { id }
+        });
+
+        await User.destroy({
+            where: {
+                id
+            }
+        });
+
+        res.json(user);
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            msg: 'Contacte con el usuario'
+        });
+    }
 
 }
 
