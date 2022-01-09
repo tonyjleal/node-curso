@@ -1,6 +1,5 @@
 var socket = io();
 
-let params = new URLSearchParams( window.location.search);
 if( !params.has('name') || !params.has('room')){
     window.location = 'index.html';
     throw new Error('El nombre y sala son necesario');
@@ -15,7 +14,8 @@ socket.on('connect', function() {
     console.log('Conectado al servidor');
 
     socket.emit('connectChat', user, function(resp){
-        console.log('Usuarios conectados', resp);
+        // console.log('Usuarios conectados', resp);
+        renderUsers(resp);
     });
 });
 
@@ -45,7 +45,7 @@ socket.on('createMessage', function(mensaje) {
 });
 
 socket.on('listUsers', (users) => {
-    console.log(users);
+    renderUsers(users);
 });
 
 socket.on('privateMessage', (message) => {
