@@ -44,5 +44,9 @@ socket.on('createMessage', function(mensaje) {
 });
 
 socket.on('listUsers', (users) => {
-console.log(users);
+    console.log(users);
+});
+
+socket.on('privateMessage', (message) => {
+    console.log('Mensaje privado: ', message);
 });
