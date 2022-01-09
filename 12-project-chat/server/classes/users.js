@@ -5,8 +5,8 @@ class Users {
     }
 
 
-    addUser(id, name) {
-        let user = { id, name };
+    addUser(id, name, room) {
+        let user = { id, name, room };
 
         this.users.push(user);
 
@@ -21,8 +21,8 @@ class Users {
         return this.users;
     }
 
-    getUserByRoom(room) {
-
+    getUsersByRoom(room) {
+        return this.users.filter(u => u.room === room);
     }
 
     deleteUser(id) {
