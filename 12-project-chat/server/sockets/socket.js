@@ -13,8 +13,18 @@ io.on('connection', (client) => {
                 msg: 'El nombre es necesario'
             });
         }
-        callback(users.addUser(client.id, data.name));
+        let listUsers = users.addUser(client.id, data.name);
+        client.broadcast.emit('listUsers', users.getUsers());
+        callback(listUsers);
     });
+    
+    client.on('disconnect', () => {
+        let userDisconnect =  users.deleteUser(client.id);
+        
+        client.broadcast.emit('createMessage', { user:'Admin', message: `${userDisconnect.name} abandonó el chat`});
+        client.broadcast.emit('listUsers', users.getUsers());
+    });
+
 
 
 });
