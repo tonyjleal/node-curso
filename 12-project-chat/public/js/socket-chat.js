@@ -19,14 +19,12 @@ socket.on('connect', function() {
     });
 });
 
-// escuchar
+
 socket.on('disconnect', function() {
 
     console.log('Perdimos conexión con el servidor');
 
 });
-
-
 
 
 // Enviar información
@@ -38,9 +36,9 @@ socket.on('disconnect', function() {
 // });
 
 // Escuchar información
-socket.on('createMessage', function(mensaje) {
+socket.on('createMessage', (message) => {
 
-    console.log('Servidor:', mensaje);
+    renderMessage(message);
 
 });
 

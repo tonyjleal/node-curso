@@ -28,12 +28,14 @@ io.on('connection', (client) => {
         client.broadcast.to(userDisconnect.room).emit('listUsers', users.getUsersByRoom(userDisconnect.room));
     });
 
-    client.on('sendMessage', (data) => {
+    client.on('sendMessage', (data, callback) => {
 
         let user = users.getUser(client.id);
         let message = createMessage(user.name, data.message);
 
         client.broadcast.to(user.room).emit('createMessage', message);
+
+        callback( message );
 
     });
 
