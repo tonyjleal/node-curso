@@ -27,19 +27,10 @@ socket.on('disconnect', function() {
 });
 
 
-// Enviar información
-// socket.emit('sendMessage', {
-//     usuario: 'Fernando',
-//     mensaje: 'Hola Mundo'
-// }, function(resp) {
-//     console.log('respuesta server: ', resp);
-// });
-
-// Escuchar información
 socket.on('createMessage', (message) => {
 
-    renderMessage(message);
-
+    renderMessage(message, false);
+    scrollBottom();
 });
 
 socket.on('listUsers', (users) => {

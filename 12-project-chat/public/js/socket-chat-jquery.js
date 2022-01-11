@@ -30,22 +30,58 @@ const renderUsers = (users) => {
 
 }
 
-const renderMessage = ( message ) => {
+const renderMessage = ( message, self ) => {
 
+    const date = new Date(message.date);
+    // let hour = date.getHours() + ':' + date.getMinutes();
+    let hour = date.toLocaleTimeString(navigator.language, {hour: '2-digit', minute:'2-digit'});
     let html = '';
+    let adminClass = 'info';
 
-    html = `<li class="animated fadeIn">
-                <div class="chat-img"><img src="assets/images/users/1.jpg" alt="user" /></div>
-                <div class="chat-content">
-                    <h5>${ message.name }</h5>
-                    <div class="box bg-light-info">${ message.message }</div>
-                </div>
-                <div class="chat-time">10:56 am</div>
-            </li>`;
+    if(message.name === 'Admin') {
+        adminClass = 'danger';
+    }
+
+    if ( self ) {
+        html = `<li class="reverse">
+                    <div class="chat-content">
+                        <h5>${ message.name }</h5>
+                        <div class="box bg-light-inverse">${ message.message }</div>
+                    </div>
+                    <div class="chat-img"><img src="assets/images/users/5.jpg" alt="user" /></div>
+                    <div class="chat-time">${ hour }</div>
+                </li>`; 
+
+    } else {
+        html = `<li class="animated fadeIn">
+                    <div class="chat-img" style="display:${ message.name === 'Admin' ? 'none' : '' }"><img src="assets/images/users/1.jpg" alt="user"  /></div>
+                    <div class="chat-content">
+                        <h5>${ message.name }</h5>
+                        <div class="box bg-light-${ adminClass }">${ message.message }</div>
+                    </div>
+                    <div class="chat-time">${ hour }</div>
+                </li>`;
+    }
 
     divChatbox.append(html);
 }
 
+const scrollBottom = () => {
+
+    // selectors
+    var newMessage = divChatbox.children('li:last-child');
+
+    // heights
+    var clientHeight = divChatbox.prop('clientHeight');
+    var scrollTop = divChatbox.prop('scrollTop');
+    var scrollHeight = divChatbox.prop('scrollHeight');
+    var newMessageHeight = newMessage.innerHeight();
+    var lastMessageHeight = newMessage.prev().innerHeight() || 0;
+
+    if (clientHeight + scrollTop + newMessageHeight + lastMessageHeight >= scrollHeight) {
+        divChatbox.scrollTop(scrollHeight);
+    }
+}
 
 divUsers.on('click', 'a', function() {
 
@@ -69,7 +105,9 @@ sendForm.on('submit', function(e) {
         message: txtMessage.val(),
     }, function( message ) {
        txtMessage.val('').focus();
-       renderMessage(message);
+       renderMessage(message, true);
+       scrollBottom();
     });
     
 });
+

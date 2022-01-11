@@ -18,6 +18,8 @@ io.on('connection', (client) => {
 
         users.addUser(client.id, data.name, data.room);
         client.broadcast.to(data.room).emit('listUsers', users.getUsersByRoom(data.room));
+        client.broadcast.to(data.room).emit('createMessage', createMessage('Admin',`${data.name} se unió`));
+        
         callback(users.getUsersByRoom(data.room));
     });
     
