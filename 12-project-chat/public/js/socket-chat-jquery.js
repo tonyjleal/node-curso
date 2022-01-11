@@ -5,12 +5,11 @@ let params = new URLSearchParams(window.location.search);
 const divUsers = $('#divUsers');
 
 const renderUsers = (users) => {
-    console.log(users);
 
     let html = '';
 
     html = `<li>
-                <a href="javascript:void(0)" class="active"> Chat de <span> ${ params.get('room') }</span></a>;
+                <a href="javascript:void(0)" class="active"> Chat de <span> ${ params.get('room') }</span></a>
             </li>`;
 
 
@@ -23,3 +22,14 @@ const renderUsers = (users) => {
     divUsers.html(html);
 
 }
+
+
+divUsers.on('click', 'a', function(){
+
+    const id = $(this).data('id');
+
+    if( id ) {
+        console.log(id);
+    }
+
+});
